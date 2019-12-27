@@ -11,7 +11,7 @@ XP_RPCC.version = "0.1.0"
 
 local xp_rpcc_enable = CreateConVar("xp_rpcc_enable", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the Rainbow Player Color Cycle.")
 local xp_rpcc_offset = CreateConVar("xp_rpcc_offset", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable an offset so that players doesn't cycle the same color.")
-local xp_rpcc_default_speed = CreateConVar("xp_rpcc_default_speed", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Default cycle speed.")
+local xp_rpcc_default_speed = CreateConVar("xp_rpcc_default_speed", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Default cycle speed (float).")
 local xp_rpcc_health_lightness = CreateConVar("xp_rpcc_health_lightness", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Should player health affect color lightness.")
 local xp_rpcc_health_speed = CreateConVar("xp_rpcc_health_speed", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Should player health affect cycle speed.")
 local xp_rpcc_gamemode_whitelist = CreateConVar("xp_rpcc_gamemode_whitelist", "sandbox,cinema,elevator,jazztronauts,melonbomber", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Gamemode whitelist.")
