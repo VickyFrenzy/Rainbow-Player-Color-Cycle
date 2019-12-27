@@ -70,6 +70,13 @@ if CLIENT then
 
 	CreateClientConVar("xp_rpcc_cl_enable", 1, true, true, "Enable the Rainbow Player Color Cycle for yourself.")
 
+	concommand.Add("xp_rpcc_cl_open_github_page", function(ply, cmd, args)
+		gui.OpenURL("https://github.com/VictorienXP/Rainbow-Player-Color-Cycle")
+	end)
+	concommand.Add("xp_rpcc_cl_open_workshop_page", function(ply, cmd, args)
+		gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=1949419667")
+	end)
+
 	hook.Add("PopulateToolMenu", "XP_RPCC_MenuSettings", function()
 		spawnmenu.AddToolMenuOption("Options", "Player", "XP_RPCC", "Rainbow Player Color Cycle", "", "", function(panel)
 			panel:ClearControls()
@@ -78,8 +85,8 @@ if CLIENT then
 			panel:Help("You are on version " .. XP_RPCC.version)
 			panel:CheckBox("Enable", "xp_rpcc_cl_enable")
 			panel:ControlHelp("Enable the rainbow color cycle for yourself.")
-			--panel:Button("GitHub repo", "")
-			--panel:Button("Workshop page", "")
+			panel:Button("GitHub repo", "xp_rpcc_cl_open_github_page")
+			panel:Button("Workshop page", "xp_rpcc_cl_open_workshop_page")
 		end)
 	end)
 
