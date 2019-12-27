@@ -1,0 +1,18 @@
+{
+	"title"		:	"Rainbow Player Color Cycle",
+	"type"		:	"effects",
+	"tags"		:	[ "fun", "comic" ],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*",
+		"*.git*",
+		"*.fgd",
+		"*.md",
+		"desktop.ini",
+		"Thumbs.db",
+		"CODEOWNERS",
+		"LICENSE"
+	]
+}
