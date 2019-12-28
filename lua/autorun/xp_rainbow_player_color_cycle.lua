@@ -22,20 +22,29 @@ if SERVER then
 
 	local current_gamemode = engine.ActiveGamemode()
 
-	XP_RPCC.gamemode_whitelist = string.Explode(",", xp_rpcc_gamemode_whitelist:GetString())
-	XP_RPCC.gamemode_blacklist = string.Explode(",", xp_rpcc_gamemode_blacklist:GetString())
+	local function update_gamemode_whitelist(str)
+		XP_RPCC.gamemode_whitelist = string.Explode(",", str)
+		XP_RPCC.gamemode_whitelisted = table.HasValue(XP_RPCC.gamemode_whitelist, current_gamemode)
+	end
+	update_gamemode_whitelist(xp_rpcc_gamemode_whitelist:GetString())
+
+	local function update_gamemode_blacklist(str)
+		XP_RPCC.gamemode_blacklist = string.Explode(",", str)
+		XP_RPCC.gamemode_blacklisted = table.HasValue(XP_RPCC.gamemode_blacklist, current_gamemode)
+	end
+	update_gamemode_blacklist(xp_rpcc_gamemode_blacklist:GetString())
 
 	cvars.AddChangeCallback("xp_rpcc_gamemode_whitelist", function(convar, oldvalue, newvalue)
-		XP_RPCC.gamemode_whitelist = string.Explode(",", newvalue)
+		update_gamemode_whitelist(newvalue)
 	end)
 
 	cvars.AddChangeCallback("xp_rpcc_gamemode_blacklist", function(convar, oldvalue, newvalue)
-		XP_RPCC.gamemode_blacklist = string.Explode(",", newvalue)
+		update_gamemode_blacklist(newvalue)
 	end)
 
 	function XP_RPCC:Think()
 
-		if xp_rpcc_enable:GetBool() and !table.HasValue(XP_RPCC.gamemode_blacklist, current_gamemode) and (table.HasValue(XP_RPCC.gamemode_whitelist, current_gamemode) or !xp_rpcc_gamemode_whitelist_only:GetBool()) then
+		if xp_rpcc_enable:GetBool() and !XP_RPCC.gamemode_blacklisted and (XP_RPCC.gamemode_whitelisted or !xp_rpcc_gamemode_whitelist_only:GetBool()) then
 
 			for k, v in pairs(player.GetAll()) do
 
