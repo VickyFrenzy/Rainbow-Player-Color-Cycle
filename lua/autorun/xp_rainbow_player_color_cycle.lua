@@ -48,7 +48,10 @@ if SERVER then
 
 			for k, v in pairs(player.GetAll()) do
 
-				if v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1 then
+				local player_color_enabled = v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1
+				local physgun_color_enabled = v:GetInfoNum("xp_rpcc_cl_physgun", 1) == 1
+
+				if player_color_enabled or physgun_color_enabled then
 
 					local health = v:Health()
 					local lightness = xp_rpcc_health_lightness:GetBool() and (math.Clamp(health, 0, 100) / 100) or 1
@@ -61,7 +64,13 @@ if SERVER then
 					local g = ( 0.5 * (math.sin(base_value) + 1) ) * lightness
 					local b = ( 0.5 * (math.sin(base_value + 1) + 1) ) * lightness
 
-					v:SetPlayerColor( Vector(r, g, b) )
+					if player_color_enabled then
+						v:SetPlayerColor( Vector(r, g, b) )
+					end
+
+					if physgun_color_enabled then
+						v:SetWeaponColor( Vector(r, g, b) )
+					end
 
 				end
 
@@ -78,6 +87,7 @@ end
 if CLIENT then
 
 	CreateClientConVar("xp_rpcc_cl_enable", 1, true, true, "Enable the Rainbow Player Color Cycle for yourself.")
+	CreateClientConVar("xp_rpcc_cl_physgun", 1, true, true, "Enable the rainbow color cycle for your physgun and other compatible weapons.")
 
 	concommand.Add("xp_rpcc_cl_open_github_page", function(ply, cmd, args)
 		gui.OpenURL("https://github.com/VictorienXP/Rainbow-Player-Color-Cycle")
@@ -92,8 +102,10 @@ if CLIENT then
 			panel:Help("Welcome to the Rainbow Player Color Cycle settings.")
 			panel:Help("This addon gives you a rainbow color cycle on your player color.")
 			panel:Help("You are on version " .. XP_RPCC.version)
-			panel:CheckBox("Enable", "xp_rpcc_cl_enable")
-			panel:ControlHelp("Enable the rainbow color cycle for yourself.")
+			panel:CheckBox("Enable for your player color", "xp_rpcc_cl_enable")
+			panel:ControlHelp("Enable the rainbow color cycle for your player color.")
+			panel:CheckBox("Enable for your physgun", "xp_rpcc_cl_physgun")
+			panel:ControlHelp("Enable the rainbow color cycle for your physgun and other compatible weapons.")
 			panel:Button("GitHub repo", "xp_rpcc_cl_open_github_page")
 			panel:Button("Workshop page", "xp_rpcc_cl_open_workshop_page")
 		end)
