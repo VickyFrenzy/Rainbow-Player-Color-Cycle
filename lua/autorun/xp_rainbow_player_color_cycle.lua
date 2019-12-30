@@ -46,6 +46,12 @@ if SERVER then
 
 		if xp_rpcc_enable:GetBool() and !XP_RPCC.gamemode_blacklisted and (XP_RPCC.gamemode_whitelisted or !xp_rpcc_gamemode_whitelist_only:GetBool()) then
 
+			local default_speed = xp_rpcc_default_speed:GetFloat()
+			local do_health_lightness = xp_rpcc_health_lightness:GetBool()
+			local do_health_speed = xp_rpcc_health_speed:GetBool()
+			local do_offset = xp_rpcc_offset:GetBool()
+			local time = CurTime()
+
 			for k, v in pairs(player.GetAll()) do
 
 				local player_color_enabled = v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1
@@ -53,12 +59,15 @@ if SERVER then
 
 				if player_color_enabled or physgun_color_enabled then
 
-					local health = v:Health()
-					local lightness = xp_rpcc_health_lightness:GetBool() and (math.Clamp(health, 0, 100) / 100) or 1
-					local speed = xp_rpcc_health_speed:GetBool() and (health / 100) or xp_rpcc_default_speed:GetFloat()
-					local offset = xp_rpcc_offset:GetBool() and v:EntIndex() or 0
+					local player_health_lightness = do_health_lightness and v:GetInfoNum("xp_rpcc_cl_health_lightness", 1) == 1
+					local player_health_speed = do_health_speed and v:GetInfoNum("xp_rpcc_cl_health_speed", 1) == 1
 
-					local base_value = CurTime() * speed + offset
+					local health = v:Health()
+					local lightness = player_health_lightness and (math.Clamp(health, 0, 100) / 100) or 1
+					local speed = player_health_speed and (health / 100) or default_speed
+					local offset = do_offset and v:EntIndex() or 0
+
+					local base_value = time * speed + offset
 
 					local r = ( 0.5 * (math.sin(base_value - 1) + 1) ) * lightness
 					local g = ( 0.5 * (math.sin(base_value) + 1) ) * lightness
@@ -88,6 +97,8 @@ if CLIENT then
 
 	CreateClientConVar("xp_rpcc_cl_enable", 1, true, true, "Enable the Rainbow Player Color Cycle for yourself.")
 	CreateClientConVar("xp_rpcc_cl_physgun", 1, true, true, "Enable the rainbow color cycle for your physgun and other compatible weapons.")
+	CreateClientConVar("xp_rpcc_cl_health_lightness", 1, true, true, "Should your health affect color lightness (this can be disabled by the server).")
+	CreateClientConVar("xp_rpcc_cl_health_speed", 1, true, true, "Should your health affect color cycle speed (this can be disabled by the server).")
 
 	concommand.Add("xp_rpcc_cl_open_github_page", function(ply, cmd, args)
 		gui.OpenURL("https://github.com/VictorienXP/Rainbow-Player-Color-Cycle")
@@ -106,6 +117,10 @@ if CLIENT then
 			panel:ControlHelp("Enable the rainbow color cycle for your player color.")
 			panel:CheckBox("Enable for your physgun", "xp_rpcc_cl_physgun")
 			panel:ControlHelp("Enable the rainbow color cycle for your physgun and other compatible weapons.")
+			panel:CheckBox("Enable health color lightness", "xp_rpcc_cl_health_lightness")
+			panel:ControlHelp("Should your health affect color lightness (this can be disabled by the server).")
+			panel:CheckBox("Enable health color speed", "xp_rpcc_cl_health_speed")
+			panel:ControlHelp("Should your health affect color cycle speed (this can be disabled by the server).")
 			panel:Button("GitHub repo", "xp_rpcc_cl_open_github_page")
 			panel:Button("Workshop page", "xp_rpcc_cl_open_workshop_page")
 		end)
