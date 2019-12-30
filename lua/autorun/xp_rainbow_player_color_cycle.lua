@@ -58,6 +58,7 @@ if SERVER then
 				local is_bot = xp_rpcc_enable_bots:GetBool() and v:IsBot()
 				local player_color_enabled = (v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1 or is_bot)
 				local physgun_color_enabled = (v:GetInfoNum("xp_rpcc_cl_physgun", 1) == 1 or is_bot)
+				local do_not_cycle = v:GetInfoNum("xp_rpcc_cl_disable_cycle", 0) == 1
 
 				if player_color_enabled or physgun_color_enabled then
 
@@ -69,7 +70,7 @@ if SERVER then
 					local speed = player_health_speed and (health / 100) or default_speed
 					local offset = do_offset and v:EntIndex() or 0
 
-					local base_value = time * speed + offset
+					local base_value = do_not_cycle and v:Deaths() or time * speed + offset
 
 					local r = ( 0.5 * (math.sin(base_value - 1) + 1) ) * lightness
 					local g = ( 0.5 * (math.sin(base_value) + 1) ) * lightness
@@ -101,6 +102,7 @@ if CLIENT then
 	CreateClientConVar("xp_rpcc_cl_physgun", 1, true, true, "Enable the rainbow color cycle for your physgun and other compatible weapons.")
 	CreateClientConVar("xp_rpcc_cl_health_lightness", 1, true, true, "Should your health affect color lightness (this can be disabled by the server).")
 	CreateClientConVar("xp_rpcc_cl_health_speed", 1, true, true, "Should your health affect color cycle speed (this can be disabled by the server).")
+	CreateClientConVar("xp_rpcc_cl_disable_cycle", 0, true, true, "If you wish to only have one static random color upon respawn.")
 
 	concommand.Add("xp_rpcc_cl_open_github_page", function(ply, cmd, args)
 		gui.OpenURL("https://github.com/VictorienXP/Rainbow-Player-Color-Cycle")
@@ -123,6 +125,8 @@ if CLIENT then
 			panel:ControlHelp("Should your health affect color lightness (this can be disabled by the server).")
 			panel:CheckBox("Enable health color speed", "xp_rpcc_cl_health_speed")
 			panel:ControlHelp("Should your health affect color cycle speed (this can be disabled by the server).")
+			panel:CheckBox("Disable constant color cycle", "xp_rpcc_cl_disable_cycle")
+			panel:ControlHelp("If you wish to only have one static random color upon respawn.")
 			panel:Button("GitHub repo", "xp_rpcc_cl_open_github_page")
 			panel:Button("Workshop page", "xp_rpcc_cl_open_workshop_page")
 		end)
