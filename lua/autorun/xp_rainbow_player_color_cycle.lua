@@ -55,14 +55,14 @@ if SERVER then
 
 			for k, v in pairs(player.GetAll()) do
 
-				local player_color_enabled = v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1
-				local physgun_color_enabled = v:GetInfoNum("xp_rpcc_cl_physgun", 1) == 1
 				local is_bot = xp_rpcc_enable_bots:GetBool() and v:IsBot()
+				local player_color_enabled = (v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1 or is_bot)
+				local physgun_color_enabled = (v:GetInfoNum("xp_rpcc_cl_physgun", 1) == 1 or is_bot)
 
-				if player_color_enabled or physgun_color_enabled or is_bot then
+				if player_color_enabled or physgun_color_enabled then
 
-					local player_health_lightness = do_health_lightness and v:GetInfoNum("xp_rpcc_cl_health_lightness", 1) == 1
-					local player_health_speed = do_health_speed and v:GetInfoNum("xp_rpcc_cl_health_speed", 1) == 1
+					local player_health_lightness = do_health_lightness and (v:GetInfoNum("xp_rpcc_cl_health_lightness", 1) == 1 or is_bot)
+					local player_health_speed = do_health_speed and (v:GetInfoNum("xp_rpcc_cl_health_speed", 1) == 1 or is_bot)
 
 					local health = v:Health()
 					local lightness = player_health_lightness and (math.Clamp(health, 0, 100) / 100) or 1
@@ -75,11 +75,11 @@ if SERVER then
 					local g = ( 0.5 * (math.sin(base_value) + 1) ) * lightness
 					local b = ( 0.5 * (math.sin(base_value + 1) + 1) ) * lightness
 
-					if player_color_enabled or is_bot then
+					if player_color_enabled then
 						v:SetPlayerColor( Vector(r, g, b) )
 					end
 
-					if physgun_color_enabled or is_bot then
+					if physgun_color_enabled then
 						v:SetWeaponColor( Vector(r, g, b) )
 					end
 
