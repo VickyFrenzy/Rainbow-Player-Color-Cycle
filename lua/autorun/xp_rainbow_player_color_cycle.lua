@@ -17,6 +17,7 @@ local xp_rpcc_health_speed = CreateConVar("xp_rpcc_health_speed", 1, {FCVAR_REPL
 local xp_rpcc_gamemode_whitelist = CreateConVar("xp_rpcc_gamemode_whitelist", "sandbox,cinema,elevator,jazztronauts,melonbomber", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Gamemode whitelist.")
 local xp_rpcc_gamemode_blacklist = CreateConVar("xp_rpcc_gamemode_blacklist", "guesswho,hideandseek,morbusgame,murder,superpedobear,terrortown,prophunters", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Gamemode blacklist.")
 local xp_rpcc_gamemode_whitelist_only = CreateConVar("xp_rpcc_gamemode_whitelist_only", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Set if gamemodes have to be whitelisted.")
+local xp_rpcc_enable_bots = CreateConVar("xp_rpcc_enable_bots", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the Rainbow Player Color Cycle for bots.")
 
 if SERVER then
 
@@ -56,8 +57,9 @@ if SERVER then
 
 				local player_color_enabled = v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1
 				local physgun_color_enabled = v:GetInfoNum("xp_rpcc_cl_physgun", 1) == 1
+				local is_bot = xp_rpcc_enable_bots:GetBool() and v:IsBot()
 
-				if player_color_enabled or physgun_color_enabled then
+				if player_color_enabled or physgun_color_enabled or is_bot then
 
 					local player_health_lightness = do_health_lightness and v:GetInfoNum("xp_rpcc_cl_health_lightness", 1) == 1
 					local player_health_speed = do_health_speed and v:GetInfoNum("xp_rpcc_cl_health_speed", 1) == 1
@@ -73,11 +75,11 @@ if SERVER then
 					local g = ( 0.5 * (math.sin(base_value) + 1) ) * lightness
 					local b = ( 0.5 * (math.sin(base_value + 1) + 1) ) * lightness
 
-					if player_color_enabled then
+					if player_color_enabled or is_bot then
 						v:SetPlayerColor( Vector(r, g, b) )
 					end
 
-					if physgun_color_enabled then
+					if physgun_color_enabled or is_bot then
 						v:SetWeaponColor( Vector(r, g, b) )
 					end
 
