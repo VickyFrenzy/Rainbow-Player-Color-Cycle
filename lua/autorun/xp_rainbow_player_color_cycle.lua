@@ -7,7 +7,7 @@
 AddCSLuaFile()
 
 XP_RPCC = XP_RPCC or {}
-XP_RPCC.version = "0.2.0"
+XP_RPCC.version = "0.3.0"
 
 local xp_rpcc_enable = CreateConVar("xp_rpcc_enable", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the Rainbow Player Color Cycle.")
 local xp_rpcc_offset = CreateConVar("xp_rpcc_offset", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable an offset so that players doesn't cycle the same color.")
