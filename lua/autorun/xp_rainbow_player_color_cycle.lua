@@ -79,8 +79,8 @@ if SERVER then
 				-- This leads to more optimized expressions afterwise.
 				-- You might notice that we do "or is_bot", this is because bots are "empty" and basically everything will always be 0 from Player:GetInfoNum() for them.
 				local is_bot = xp_rpcc_enable_bots:GetBool() and v:IsBot() -- This variable will say if the player is a bot and if bots are enabled by the cvar.
-				local player_color_enabled = (v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1 or is_bot) -- This is the option where a player decide to enable the color effect on themselves or not.
-				local physgun_color_enabled = (v:GetInfoNum("xp_rpcc_cl_physgun", 1) == 1 or is_bot) -- This is the option where a player decide to enable the color effect on their physgun or not.
+				local player_color_enabled = v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1 or is_bot -- This is the option where a player decide to enable the color effect on themselves or not.
+				local physgun_color_enabled = v:GetInfoNum("xp_rpcc_cl_physgun", 1) == 1 or is_bot -- This is the option where a player decide to enable the color effect on their physgun or not.
 
 				if player_color_enabled or physgun_color_enabled then -- We only need to proceed if at least one option is enabled.
 
