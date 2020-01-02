@@ -58,12 +58,12 @@ if SERVER then
 				local is_bot = xp_rpcc_enable_bots:GetBool() and v:IsBot()
 				local player_color_enabled = (v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1 or is_bot)
 				local physgun_color_enabled = (v:GetInfoNum("xp_rpcc_cl_physgun", 1) == 1 or is_bot)
-				local do_not_cycle = v:GetInfoNum("xp_rpcc_cl_disable_cycle", 0) == 1
 
 				if player_color_enabled or physgun_color_enabled then
 
 					local player_health_lightness = do_health_lightness and (v:GetInfoNum("xp_rpcc_cl_health_lightness", 1) == 1 or is_bot)
 					local player_health_speed = do_health_speed and (v:GetInfoNum("xp_rpcc_cl_health_speed", 1) == 1 or is_bot)
+					local do_not_cycle = v:GetInfoNum("xp_rpcc_cl_disable_cycle", 0) == 1
 
 					local health = v:Health()
 					local lightness = player_health_lightness and (math.Clamp(health, 0, 100) / 100) or 1
