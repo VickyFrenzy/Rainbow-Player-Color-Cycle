@@ -21,7 +21,7 @@ local xp_rpcc_enable_bots = CreateConVar("xp_rpcc_enable_bots", 1, {FCVAR_REPLIC
 
 if SERVER then
 
-	local current_gamemode = engine.ActiveGamemode()
+	local current_gamemode = engine.ActiveGamemode() -- We store the current gamemode to check against the whitelist and blacklist.
 
 	local function update_gamemode_whitelist(str)
 		XP_RPCC.gamemode_whitelist = string.Explode(",", str)
@@ -43,10 +43,30 @@ if SERVER then
 		update_gamemode_blacklist(newvalue)
 	end)
 
+	--[[
+
+		The following function will be called on every server tick.
+		The default Source Engine tick rate is about 66.666... ticks per second.
+		So it's slightly above the 60 fps mark and provides a decent update flow for most users.
+
+		If most clients have high refresh rate monitors,
+		you could try to crank up the server tick rate,
+		so the effect can get even smoother,
+		if the server, the network and the clients can handle it.
+
+		But doing this just for this effect is really overkill.
+		The default ~68 tick rate is already plenty for this effect.
+		There are plenty others good reasons to mess with the server tick rate.
+
+		Learn more about Source Engine networking here: https://developer.valvesoftware.com/wiki/Source_Multiplayer_Networking
+
+	]]
+
 	function XP_RPCC:Think()
 
 		if xp_rpcc_enable:GetBool() and !XP_RPCC.gamemode_blacklisted and (XP_RPCC.gamemode_whitelisted or !xp_rpcc_gamemode_whitelist_only:GetBool()) then
 
+			-- Here we store some variables for easy access.
 			local default_speed = xp_rpcc_default_speed:GetFloat()
 			local do_health_lightness = xp_rpcc_health_lightness:GetBool()
 			local do_health_speed = xp_rpcc_health_speed:GetBool()
@@ -55,11 +75,14 @@ if SERVER then
 
 			for k, v in pairs(player.GetAll()) do
 
-				local is_bot = xp_rpcc_enable_bots:GetBool() and v:IsBot()
-				local player_color_enabled = (v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1 or is_bot)
-				local physgun_color_enabled = (v:GetInfoNum("xp_rpcc_cl_physgun", 1) == 1 or is_bot)
+				-- Here we already do some conditional statements and store them.
+				-- This leads to more optimized expressions afterwise.
+				-- You might notice that we do "or is_bot", this is because bots are "empty" and basically everything will always be 0 from Player:GetInfoNum() for them.
+				local is_bot = xp_rpcc_enable_bots:GetBool() and v:IsBot() -- This variable will say if the player is a bot and if bots are enabled by the cvar.
+				local player_color_enabled = (v:GetInfoNum("xp_rpcc_cl_enable", 1) == 1 or is_bot) -- This is the option where a player decide to enable the color effect on themselves or not.
+				local physgun_color_enabled = (v:GetInfoNum("xp_rpcc_cl_physgun", 1) == 1 or is_bot) -- This is the option where a player decide to enable the color effect on their physgun or not.
 
-				if player_color_enabled or physgun_color_enabled then
+				if player_color_enabled or physgun_color_enabled then -- We only need to proceed if at least one option is enabled.
 
 					local player_health_lightness = do_health_lightness and (v:GetInfoNum("xp_rpcc_cl_health_lightness", 1) == 1 or is_bot)
 					local player_health_speed = do_health_speed and (v:GetInfoNum("xp_rpcc_cl_health_speed", 1) == 1 or is_bot)
@@ -68,20 +91,20 @@ if SERVER then
 					local health = v:Health()
 					local lightness = player_health_lightness and (math.Clamp(health, 0, 100) / 100) or 1
 					local speed = player_health_speed and (health / 100) or default_speed
-					local offset = do_offset and v:EntIndex() or 0
+					local offset = do_offset and v:EntIndex() or 0 -- The offset value is just the entity index. This is fine.
 
-					local base_value = do_not_cycle and v:Deaths() or time * speed + offset
+					local base_value = do_not_cycle and v:Deaths() or time * speed + offset -- This is the base value used for the color cycle. It's time (with speed multiplier and offset).
 
 					local r = ( 0.5 * (math.sin(base_value - 1) + 1) ) * lightness
 					local g = ( 0.5 * (math.sin(base_value) + 1) ) * lightness
 					local b = ( 0.5 * (math.sin(base_value + 1) + 1) ) * lightness
 
 					if player_color_enabled then
-						v:SetPlayerColor( Vector(r, g, b) )
+						v:SetPlayerColor( Vector(r, g, b) ) -- Here we set the player color.
 					end
 
 					if physgun_color_enabled then
-						v:SetWeaponColor( Vector(r, g, b) )
+						v:SetWeaponColor( Vector(r, g, b) ) -- Here we set the weapon color (physgun).
 					end
 
 				end
@@ -92,7 +115,7 @@ if SERVER then
 
 	end
 
-	hook.Add("Think", "XP_RPCC_Think", XP_RPCC.Think)
+	hook.Add("Think", "XP_RPCC_Think", XP_RPCC.Think) -- Here we add our XP_RPCC:Think() function to the Think event hook.
 
 end
 
