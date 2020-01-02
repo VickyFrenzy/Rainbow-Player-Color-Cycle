@@ -8,7 +8,7 @@ Client cvars list:
 * **xp_rpcc_cl_physgun**: Enable the rainbow color cycle for your physgun and other compatible weapons (bool).  Default: 1
 * **xp_rpcc_cl_health_lightness**: Should your health affect color lightness (this can be disabled by the server) (bool).  Default: 1
 * **xp_rpcc_cl_health_speed**: Should your health affect color cycle speed (this can be disabled by the server) (bool).  Default: 1
-* **xp_rpcc_cl_disable_cycle**: If you wish to only have one static random color upon respawn (this can be disabled by the server) (bool).  Default: 0
+* **xp_rpcc_cl_disable_cycle**: If you wish to only have one static random color upon respawn (bool).  Default: 0
 
 ---
 
