@@ -7,7 +7,7 @@
 AddCSLuaFile()
 
 XP_RPCC = XP_RPCC or {}
-XP_RPCC.version = "0.3.1"
+XP_RPCC.version = "v1.0.0"
 
 local xp_rpcc_enable = CreateConVar("xp_rpcc_enable", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the Rainbow Player Color Cycle.")
 local xp_rpcc_offset = CreateConVar("xp_rpcc_offset", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable an offset so that players doesn't cycle the same color.")
@@ -139,7 +139,7 @@ if CLIENT then
 			panel:ClearControls()
 			panel:Help("Welcome to the Rainbow Player Color Cycle settings.")
 			panel:Help("This addon gives you a rainbow color cycle on your player color.")
-			panel:Help("You are on version " .. XP_RPCC.version)
+			panel:Help("You are on " .. XP_RPCC.version)
 			panel:CheckBox("Enable for your player color", "xp_rpcc_cl_enable")
 			panel:ControlHelp("Enable the rainbow color cycle for your player color.")
 			panel:CheckBox("Enable for your physgun", "xp_rpcc_cl_physgun")
@@ -157,4 +157,4 @@ if CLIENT then
 
 end
 
-print("XP_RPCC v" .. XP_RPCC.version .. " loaded!" .. Either(SERVER, " (SV)", " (CL)"))
+print("XP_RPCC " .. XP_RPCC.version .. " loaded!" .. Either(SERVER, " (SV)", " (CL)"))
