@@ -95,9 +95,9 @@ if SERVER then
 
 					local base_value = do_not_cycle and v:Deaths() or time * speed + offset -- This is the base value used for the color cycle. It's time (with speed multiplier and offset).
 
-					local r = ( 0.5 * (math.sin(base_value - 1) + 1) ) * lightness
-					local g = ( 0.5 * (math.sin(base_value) + 1) ) * lightness
-					local b = ( 0.5 * (math.sin(base_value + 1) + 1) ) * lightness
+					local r = ( 0.5 * (math.sin(base_value - 2) + 1) ) * lightness
+					local g = ( 0.5 * (math.sin(base_value + 2) + 1) ) * lightness
+					local b = ( 0.5 * (math.sin(base_value) + 1) ) * lightness
 
 					if player_color_enabled then
 						v:SetPlayerColor( Vector(r, g, b) ) -- Here we set the player color.
