@@ -15,7 +15,7 @@ local xp_rpcc_default_speed = CreateConVar("xp_rpcc_default_speed", 1, {FCVAR_RE
 local xp_rpcc_health_lightness = CreateConVar("xp_rpcc_health_lightness", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Should player health affect color lightness.")
 local xp_rpcc_health_speed = CreateConVar("xp_rpcc_health_speed", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Should player health affect cycle speed.")
 local xp_rpcc_gamemode_whitelist = CreateConVar("xp_rpcc_gamemode_whitelist", "sandbox,cinema,elevator,jazztronauts,melonbomber", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Gamemode whitelist.")
-local xp_rpcc_gamemode_blacklist = CreateConVar("xp_rpcc_gamemode_blacklist", "guesswho,hideandseek,morbusgame,murder,superpedobear,terrortown,prophunters", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Gamemode blacklist.")
+local xp_rpcc_gamemode_blacklist = CreateConVar("xp_rpcc_gamemode_blacklist", "guesswho,hideandseek,morbusgame,murder,superpedobear,terrortown,prophunters,supercookingpanic", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Gamemode blacklist.")
 local xp_rpcc_gamemode_whitelist_only = CreateConVar("xp_rpcc_gamemode_whitelist_only", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Set if gamemodes have to be whitelisted.")
 local xp_rpcc_enable_bots = CreateConVar("xp_rpcc_enable_bots", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the Rainbow Player Color Cycle for bots.")
 
