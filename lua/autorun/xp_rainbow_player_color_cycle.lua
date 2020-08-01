@@ -73,7 +73,7 @@ if SERVER then
 			local do_offset = xp_rpcc_offset:GetBool()
 			local time = CurTime()
 
-			for k, v in pairs(player.GetAll()) do
+			for _, v in pairs(player.GetAll()) do
 
 				-- Here we already do some conditional statements and store them.
 				-- This leads to more optimized expressions afterwise.
