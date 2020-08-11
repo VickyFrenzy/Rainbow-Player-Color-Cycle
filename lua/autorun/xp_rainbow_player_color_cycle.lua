@@ -55,7 +55,7 @@ if SERVER then
 		if the server, the network and the clients can handle it.
 
 		But doing this just for this effect is really overkill.
-		The default ~68 tick rate is already plenty for this effect.
+		The default ~67 tick rate is already plenty for this effect.
 		There are plenty others good reasons to mess with the server tick rate.
 
 		Learn more about Source Engine networking here: https://developer.valvesoftware.com/wiki/Source_Multiplayer_Networking
