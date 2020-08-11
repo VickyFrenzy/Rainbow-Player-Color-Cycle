@@ -64,7 +64,7 @@ if SERVER then
 
 	function XP_RPCC:Think()
 
-		if xp_rpcc_enable:GetBool() and !XP_RPCC.gamemode_blacklisted and (XP_RPCC.gamemode_whitelisted or !xp_rpcc_gamemode_whitelist_only:GetBool()) then
+		if xp_rpcc_enable:GetBool() and not XP_RPCC.gamemode_blacklisted and (XP_RPCC.gamemode_whitelisted or not xp_rpcc_gamemode_whitelist_only:GetBool()) then
 
 			-- Here we store some variables for easy access.
 			local default_speed = xp_rpcc_default_speed:GetFloat()
