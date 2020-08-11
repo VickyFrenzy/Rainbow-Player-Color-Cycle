@@ -1,6 +1,6 @@
 --[[---------------------------------------------------------
 				Rainbow Player Color Cycle
-					by VictorienXP (2019)
+					by VictorienXP (2020)
 				released under MIT license
 -----------------------------------------------------------]]
 
