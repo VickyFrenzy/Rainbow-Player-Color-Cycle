@@ -1,4 +1,4 @@
-# Rainbow-Player-Color-Cycle
+# Rainbow Player Color Cycle (RGB)
 Gives an RGB rainbow color cycle to players. Also work on physgun color!
 
 ---
