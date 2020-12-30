@@ -1,4 +1,11 @@
 # Rainbow Player Color Cycle (RGB)
+
+[![Steam Views](https://img.shields.io/steam/views/1949419667?logo=steam)](https://steamcommunity.com/sharedfiles/filedetails/?id=1949419667)
+[![Steam Subscriptions](https://img.shields.io/steam/subscriptions/1949419667?logo=steam)](https://steamcommunity.com/sharedfiles/filedetails/?id=1949419667)
+[![Steam Downloads](https://img.shields.io/steam/downloads/1949419667?logo=steam)](https://steamcommunity.com/sharedfiles/filedetails/?id=1949419667)
+[![Steam Favorites](https://img.shields.io/steam/favorites/1949419667?logo=steam)](https://steamcommunity.com/sharedfiles/filedetails/?id=1949419667)
+[![Steam File Size](https://img.shields.io/steam/size/1949419667?logo=steam)](https://steamcommunity.com/sharedfiles/filedetails/?id=1949419667)
+
 Gives an RGB rainbow color cycle to players. Also work on physgun color!
 
 ---
