@@ -18,6 +18,7 @@ local xp_rpcc_gamemode_whitelist = CreateConVar("xp_rpcc_gamemode_whitelist", "s
 local xp_rpcc_gamemode_blacklist = CreateConVar("xp_rpcc_gamemode_blacklist", "guesswho,hideandseek,morbusgame,murder,superpedobear,terrortown,prophunters,supercookingpanic", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Gamemode blacklist.")
 local xp_rpcc_gamemode_whitelist_only = CreateConVar("xp_rpcc_gamemode_whitelist_only", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Set if gamemodes have to be whitelisted.")
 local xp_rpcc_enable_bots = CreateConVar("xp_rpcc_enable_bots", 1, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the Rainbow Player Color Cycle for bots.")
+local xp_rpcc_disable_cycle = CreateConVar("xp_rpcc_disable_cycle", 0, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "If you wish players to only have one static random color upon respawn.")
 
 if SERVER then
 
@@ -43,6 +44,20 @@ if SERVER then
 		update_gamemode_blacklist(newvalue)
 	end)
 
+	local function shouldBeEnabled()
+		return xp_rpcc_enable:GetBool() and not XP_RPCC.gamemode_blacklisted and (XP_RPCC.gamemode_whitelisted or not xp_rpcc_gamemode_whitelist_only:GetBool())
+	end
+
+	local function generateBaseValue(ply)
+		local base_value = math.Rand(0.4292036768313, 6.7123889609397)
+		ply._xp_rpcc_base_value = base_value
+		return base_value
+	end
+
+	local function getBaseValue(ply)
+		return ply._xp_rpcc_base_value or generateBaseValue(ply)
+	end
+
 	--[[
 
 		The following function will be called on every server tick.
@@ -64,7 +79,7 @@ if SERVER then
 
 	function XP_RPCC:Think()
 
-		if xp_rpcc_enable:GetBool() and not XP_RPCC.gamemode_blacklisted and (XP_RPCC.gamemode_whitelisted or not xp_rpcc_gamemode_whitelist_only:GetBool()) then
+		if shouldBeEnabled() then
 
 			-- Here we store some variables for easy access.
 			local default_speed = xp_rpcc_default_speed:GetFloat()
@@ -86,18 +101,18 @@ if SERVER then
 
 					local player_health_lightness = do_health_lightness and (v:GetInfoNum("xp_rpcc_cl_health_lightness", 1) == 1 or is_bot)
 					local player_health_speed = do_health_speed and (v:GetInfoNum("xp_rpcc_cl_health_speed", 1) == 1 or is_bot)
-					local do_not_cycle = v:GetInfoNum("xp_rpcc_cl_disable_cycle", 0) == 1
+					local do_not_cycle = xp_rpcc_disable_cycle:GetBool() or v:GetInfoNum("xp_rpcc_cl_disable_cycle", 0) == 1
 
 					local health = v:Health()
 					local lightness = player_health_lightness and (math.Clamp(health, 0, 100) / 100) or 1
 					local speed = player_health_speed and (health / 100) or default_speed
 					local offset = do_offset and v:EntIndex() or 0 -- The offset value is just the entity index. This is fine.
 
-					local base_value = do_not_cycle and v:Deaths() or time * speed + offset -- This is the base value used for the color cycle. It's time (with speed multiplier and offset).
+					local base_value = do_not_cycle and getBaseValue(v) or time * speed + offset -- This is the base value used for the color cycle. It's time (with speed multiplier and offset).
 
-					local r = ( 0.5 * (math.sin(base_value - 2) + 1) ) * lightness
-					local g = ( 0.5 * (math.sin(base_value + 2) + 1) ) * lightness
-					local b = ( 0.5 * (math.sin(base_value) + 1) ) * lightness
+					local r = ( 0.5 * (math.sin(base_value - 2)	+ 1) ) * lightness
+					local g = ( 0.5 * (math.sin(base_value + 2)	+ 1) ) * lightness
+					local b = ( 0.5 * (math.sin(base_value)		+ 1) ) * lightness
 
 					if player_color_enabled then
 						v:SetPlayerColor( Vector(r, g, b) ) -- Here we set the player color.
@@ -116,6 +131,7 @@ if SERVER then
 	end
 
 	hook.Add("Think", "XP_RPCC_Think", XP_RPCC.Think) -- Here we add our XP_RPCC:Think() function to the Think event hook.
+	hook.Add("PostPlayerDeath", "XP_RPCC_RegenColor", function(ply) if shouldBeEnabled() then generateBaseValue(ply) end end)
 
 end
 
